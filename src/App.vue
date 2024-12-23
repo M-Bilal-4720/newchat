@@ -1,26 +1,46 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+
+  <div id="app">
+
+    <router-view />
+  </div>
+
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import axios from './axios';
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
+  name: "App",
+  mounted() {
+    this.updateActiveStatus(1);
+    document.addEventListener("visibilitychange", this.handleVisibilityChange);
+    window.addEventListener("beforeunload", () => this.updateActiveStatus(0));
+    let token=localStorage.getItem('token');
+    if(token){
+      this.$router.push({name:"LoginPage"});
+    }
+    
+  },
+   beforeUnmount() {
+    document.removeEventListener("visibilitychange", this.handleVisibilityChange);
+    window.removeEventListener("beforeunload", () => this.updateActiveStatus(0));
+  },
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+  methods: {
+    async updateActiveStatus(status) {
+      try {
+        await axios.post("/user/active/status", { is_active: status });
+        console.log("User status updated:", status);
+      } catch (error) {
+        console.error("Failed to update status:", error);
+      }
+    },
+    handleVisibilityChange() {
+      if (document.visibilityState === "visible") {
+        this.updateActiveStatus(1); 
+      } else {
+        this.updateActiveStatus(0); 
+      }
+    },
+  }
+};
+</script>
