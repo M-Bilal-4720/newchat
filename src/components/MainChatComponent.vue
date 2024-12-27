@@ -21,7 +21,7 @@
               <span class="last-seen">Online</span>
             </div>
           </div>
-          <div class="user-details">
+          <div v-else class="user-details">
             <div class="d-xl-none">
               <a class="text-muted chat-close me-2" href="#" @click.prevent="goBack">
                 <i class="fas fa-arrow-left"></i> 
@@ -127,7 +127,7 @@
                         </ul>
                       </div>
                     </div>
-                    <div v-if="message.type==='audio'" class="message-content bg-transparent p-0">
+                    <div v-if="message.type==='audio' " class="message-content bg-transparent p-0">
                       <div class="message-audio">
                         <audio :src="getFileUrl(message.file_url)" controls="">
 
@@ -225,7 +225,7 @@
                         </ul>
                       </div>
                     </div>
-                    <div v-if="message.type==='file'" class="message-content">
+                    <div v-if="message.type=== 'file'" class="message-content">
                       <div class="file-attach">
                       <span class="file-icon">
                         <i class="ti ti-files"></i>
@@ -284,7 +284,7 @@
                         </ul>
                       </div>
                     </div>
-                    <div v-if="message.type==='video'" class="message-content">
+                    <div v-if="message.type==='video' " class="message-content">
                       <div class="message-video">
                         <video width="400" controls="">
                           <source src="/assets/img/video/video.mp4" type="video/mp4">
@@ -416,8 +416,8 @@
                         <li><a class="dropdown-item" href="#"><i class="ti ti-pinned me-2"></i>Forward</a></li>
                         <li><a class="dropdown-item" href="#"><i class="ti ti-file-export me-2"></i>Copy</a></li>
                         <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#message-delete"><i class="ti ti-trash me-2"></i>Delete</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="ti ti-check me-2"></i>Mark as Unread</a></li>
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#left-message-delete"  @click="setMessageToDelete(message.id)"><i class="ti ti-trash me-2" @click="deleteMessage(message.id, false)"></i>Delete</a></li>
+                         <li><a class="dropdown-item" href="#"><i class="ti ti-check me-2"></i>Mark as Unread</a></li>
                         <li><a class="dropdown-item" href="#"><i class="ti ti-box-align-right me-2"></i>Archeive Chat</a></li>
                         <li><a class="dropdown-item" href="#"><i class="ti ti-pinned me-2"></i>Pin Chat</a></li>
                       </ul>
@@ -440,8 +440,8 @@
                         <li><a class="dropdown-item" href="#"><i class="ti ti-pinned me-2"></i>Forward</a></li>
                         <li><a class="dropdown-item" href="#"><i class="ti ti-file-export me-2"></i>Copy</a></li>
                         <li><a class="dropdown-item" href="#"><i class="ti ti-heart me-2"></i>Mark as Favourite</a></li>
-                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#message-delete"><i class="ti ti-trash me-2"></i>Delete</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="ti ti-check me-2"></i>Mark as Unread</a></li>
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#message-delete"  @click="setMessageToDelete(message.id)"><i class="ti ti-trash me-2"></i>Delete</a></li>
+                       <li><a class="dropdown-item" href="#"><i class="ti ti-check me-2"></i>Mark as Unread</a></li>
                         <li><a class="dropdown-item" href="#"><i class="ti ti-box-align-right me-2"></i>Archeive Chat</a></li>
                         <li><a class="dropdown-item" href="#"><i class="ti ti-pinned me-2"></i>Pin Chat</a></li>
                       </ul>
@@ -629,7 +629,7 @@
                     <div v-if="message.type==='video'" class="message-content">
                       <div class="message-video">
                         <video width="400" controls="">
-                          <source src="/assets/img/video/video.mp4" type="video/mp4">
+                          <source :src="getFileUrl(message.file_url)" type="video/mp4">
                           Your browser does not support HTML5 video.
                         </video>
                       </div>
@@ -769,55 +769,62 @@
         <div class="chat-footer">
           <form class="footer-form" @submit.prevent="sendMessage">
             <div class="chats reply-chat reply-div" id="reply-div">
-              <div class="chat-avatar">
-                <img src="/assets/img/profiles/avatar-06.jpg" class="rounded-circle" alt="image">
-              </div>
-              <div class="chat-content">
-                <div class="chat-profile-name">
-                  <h6>Edward Lietz<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
-                </div>
-                <div class="chat-info">
-                  <div class="message-content">
-                    <div class="message-reply reply-content">Thank you for your support</div>
-                  </div>
-                </div>
-              </div>
-              <a href="#" class="close-replay"><i class="ti ti-x"></i></a>
+      <div class="chat-avatar">
+        <img src="/assets/img/profiles/avatar-06.jpg" class="rounded-circle" alt="image">
+      </div>
+      <div class="chat-content">
+        <div class="chat-profile-name">
+          <h6>Edward Lietz<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
+        </div>
+        <div class="chat-info">
+          <div class="message-content">
+            <div class="message-reply reply-content">Thank you for your support</div>
+          </div>
+        </div>
+      </div>
+      <a href="#" class="close-replay"><i class="ti ti-x"></i></a>
             </div>
 
             <div class="chat-footer-wrap">
-              <div class="form-item">
-                <a href="#" class="action-circle" @click="toggleRecording">
-                  <i v-if="isRecording" class="ti ti-macro-off"></i>
-                  <i v-else class="ti ti-microphone">
-                </i></a>
-              </div>
-              <div class="form-wrap">
-                <input class="form-control" v-model="newMessage" @keyup.enter="sendMessage('text')" placeholder="Type a message..." />
-              </div>
-              <div class="form-item emoj-action-foot">
-                <a href="#" class="action-circle"><i class="ti ti-mood-smile"></i></a>
-                <div class="emoj-group-list-foot down-emoji-circle">
-                  <!-- Emoji list here -->
-                </div>
-              </div>
-              <div class="form-item position-relative d-flex align-items-center justify-content-center">
-                <a href="#" class="action-circle file-action position-absolute"><i class="ti ti-folder"></i></a>
-                <input  class="open-file position-relative" name="files" id="files" type="file" @change="selectedImage" hidden ref="fileInput">
-              </div>
-              <div class="form-item">
-                <a href="#" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical"></i></a>
-                <div class="dropdown-menu dropdown-menu-end p-3">
-                  <a href="#" class="dropdown-item" @click="sendImageMessage()" type="file" @change="selectedImage" hidden ref="fileInput" ><i class="ti ti-camera-selfie me-2"></i>Camera</a>
-                  <a href="#" class="dropdown-item" @click="sendMessage('gallery')"><i class="ti ti-photo-up me-2"></i>Gallery</a>
-                  <a href="#" class="dropdown-item" @click="sendMessage('audio')"><i class="ti ti-music me-2"></i>Audio</a>
-                  <a href="#" class="dropdown-item" @click="sendMessage('location')"><i class="ti ti-map-pin-share me-2"></i>Location</a>
-                  <a href="#" class="dropdown-item" @click="sendMessage('contact')"><i class="ti ti-user-check me-2"></i>Contact</a>
-                </div>
-              </div>
-              <div class="form-btn">
-                <button class="btn btn-primary"  type="submit"><i class="ti ti-send"></i></button>
-              </div>
+               <div class="form-item">
+        <a href="#" class="action-circle" @click="toggleRecording">
+          <i v-if="isRecording" class="ti ti-macro-off"></i>
+          <i v-else class="ti ti-microphone"></i>
+        </a>
+               </div>
+               <div v-if="isRecording" class="form-wrap">
+      Time: {{ formatTimer(recordingTime) }}
+               </div>
+               <div class="form-wrap">
+        <input class="form-control" v-model="newMessage" @keyup.enter="sendMessage()" placeholder="Type a message..." />
+               </div>
+
+               <div class="form-item emoj-action-foot">
+        <a href="#" class="action-circle"><i class="ti ti-mood-smile"></i></a>
+        <div class="emoj-group-list-foot down-emoji-circle">
+          <!-- Emoji list here -->
+        </div>
+               </div>
+
+               <div class="form-item position-relative d-flex align-items-center justify-content-center">
+        <a href="#" class="action-circle file-action position-absolute" @click="triggerFileInput"><i class="ti ti-folder"></i></a>
+        <input class="open-file position-relative" name="files" id="files" type="file" ref="fileInput" @change="handleFileUpload" hidden />
+               </div>
+
+               <div class="form-item">
+        <a href="#" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical"></i></a>
+        <div class="dropdown-menu dropdown-menu-end p-3">
+          <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#camera-capture" @click="startCamera()" ><i class="ti ti-camera-selfie me-2" ></i>Camera</a>
+          <a href="#" class="dropdown-item" @click="triggerFileInput"><i class="ti ti-photo-up me-2"></i>Gallery</a>
+          <a href="#" class="dropdown-item" @click="sendMessage('audio')"><i class="ti ti-music me-2"></i>Audio</a>
+          <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#select-location"><i class="ti ti-map-pin-share me-2"></i>Location</a>
+          <input class="open-file position-relative" name="files" id="files" type="file" ref="fileInput" @change="handleFileUpload" hidden />
+        </div>
+               </div>
+
+               <div class="form-btn">
+        <button class="btn btn-primary" type="submit"><i class="ti ti-send"></i></button>
+               </div>
             </div>
           </form>
         </div>
@@ -1177,6 +1184,217 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="left-message-delete">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Chat</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <i class="ti ti-x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form @submit.prevent="deleteMessage">
+          <input type="hidden" v-model="messageIdToDelete">
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="radio" value="me" checked name="delete-chat" v-model="deleteFor">
+            <label class="form-check-label" for="delete-for-me">Delete For Me</label>
+          </div>
+          <div class="row g-3">
+            <div class="col-6">
+              <a href="#" class="btn btn-outline-primary w-100" data-bs-dismiss="modal" aria-label="Close">Cancel</a>
+            </div>
+            <div class="col-6">
+              <button type="submit" class="btn btn-primary w-100">Delete</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="modal fade" id="message-delete">
+   <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Chat</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <i class="ti ti-x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form @submit.prevent="deleteMessage">
+          <input type="hidden" v-model="messageIdToDelete">
+          <div class="form-check mb-3">
+            <input class="form-check-input" id="delete-for-me" type="radio" value="me" checked name="delete-chat" v-model="deleteFor">
+            <label class="form-check-label" for="delete-for-me">Delete For Me</label>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" id="delete-for-everyone" type="radio" value="delete_for_everyone" name="delete-chat" v-model="deleteFor">
+            <label class="form-check-label" for="delete-for-everyone">Delete For Everyone</label>
+          </div>
+          <div class="row g-3">
+            <div class="col-6">
+              <a href="#" class="btn btn-outline-primary w-100" data-bs-dismiss="modal" aria-label="Close">Cancel</a>
+            </div>
+            <div class="col-6">
+              <button type="submit" aria-label="Close" data-bs-dismiss="modal" class="btn btn-primary w-100">Delete</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+   </div>
+  </div>
+  <!-- Camera -->
+  <div class="modal fade" id="camera-capture">
+   <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Camera</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <i class="ti ti-x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form >
+          <div class="form-check mb-3">
+            <div>
+             <video ref="video" autoplay playsinline></video>
+             <img v-if="image" :src="image" alt="Captured Image" />
+             <video v-if="recordedVideo" controls>
+             <source :src="recordedVideo" type="video/webm" />
+             </video>
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col-6">
+              <a href="#" class="btn btn-outline-primary w-100" data-bs-dismiss="modal" aria-label="Close" @click="captureImage">Image Capture</a>
+            </div>
+            <div class="col-6">
+              <button type="submit" class="btn btn-primary w-100" @click="startMediaRecording">Start Recording</button>
+            </div>
+            <div class="col-6">
+              <button type="submit"  class="btn btn-primary w-100" @click="stopMediaRecording">Start Recording</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+   </div>
+  </div>
+  <!-- Location selector -->
+  <div class="modal fade" id="select-location">
+   <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Select Location</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <i class="ti ti-x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-6">
+              <a href="#" class="btn btn-outline-primary w-100" data-bs-dismiss="modal" aria-label="Close">Live Location</a>
+            </div>
+            <div class="col-6">
+              <button type="submit" aria-label="Close" data-bs-dismiss="modal" class="btn btn-primary w-100" @click="getCurrentLocation">Current Location</button>
+            </div>
+          </div>
+      </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- previews -->
+  <div  class="modal fade" id="file-preview">
+   <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">File Preview</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <i class="ti ti-x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form @submit.prevent="sendfiles">
+  <input type="hidden" v-model="sendfiles">
+  
+  <!-- Preview Section -->
+  <div class="mb-3 text-center" style="max-height: 70vh; overflow: auto;">
+    <!-- Image Preview -->
+    <img 
+      v-if="fileType.startsWith('image')" 
+      :src="filePreview" 
+      alt="Image Preview" 
+      style="max-width: 100%; max-height: 100%; object-fit: contain;" 
+    />
+      <!-- Audio Preview -->
+      <audio 
+        v-if="fileType.startsWith('audio')" 
+        :src="audioUrl" 
+        controls 
+        style="width: 100%;"
+      ></audio>
+
+    <!-- Video Preview -->
+    <video 
+      v-if="fileType.startsWith('video')" 
+      :src="filePreview" 
+      controls 
+      style="width: 100%; max-height: 70vh; object-fit: contain;"
+    ></video>
+  <!-- PDF Preview -->
+  <div v-if="fileType === 'application/pdf'" style="height: 70vh; overflow: hidden;">
+    <iframe 
+      :src="filePreview" 
+      frameborder="0" 
+      style="width: 100%; height: 100%;"
+      title="PDF Preview"
+    ></iframe>
+  </div>
+  <!-- PDF Preview -->
+  <div v-if="fileType === 'application/docx'" style="height: 70vh; overflow: hidden;">
+    <iframe 
+      :src="filePreview" 
+      frameborder="0" 
+      style="width: 100%; height: 100%;"
+      title="DOC Preview"
+    ></iframe>
+  </div>
+  <!-- Current location -->
+  <div v-if="fileType === 'currentLocation'">
+      <p><strong>Latitude:</strong> {{ currentLocation.latitude }}</p>
+      <p><strong>Longitude:</strong> {{ currentLocation.longitude }}</p>
+      <p><strong>Rurrent Location Link:</strong> {{ fileName }}</p>
+      <a :href="mapLink" target="_blank">View on Map</a>
+    </div>
+    <!-- File Name for Other Types -->
+    <p 
+      v-if="fileType.startsWith('application')" 
+      style="font-size: 1.2rem; margin-top: 20px; word-break: break-word;"
+    >
+      {{ fileName }}
+    </p>
+  </div>
+  <!-- Action Buttons -->
+  <div class="row g-3 mt-3">
+    <div class="col-6">
+      <a href="#" class="btn btn-outline-primary w-100" data-bs-dismiss="modal" aria-label="Close">Cancel</a>
+    </div>
+    <div class="col-6">
+      <button type="submit" aria-label="Close" data-bs-dismiss="modal" class="btn btn-primary w-100">Send File</button>
+    </div>
+  </div>
+</form>
+
+      </div>
+    </div>
+   </div>
+  </div>
+  <!-- /previews -->
+
   <!-- /Contact Info -->
 
 </template>
@@ -1185,7 +1403,7 @@
 import axios from '../axios';
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
-
+import { Modal } from 'bootstrap';
 window.Pusher = Pusher;
 
 const echo = new Echo({
@@ -1216,9 +1434,23 @@ export default {
       messages: [],
       newMessage: "",
       userinfo:{},
+      recordingTime: 0,
+      timerInterval: null,
       isRecording: false,
       mediaRecorder: null,
       audioChunks: [],
+      deleteType: "me", // Default to "Delete For Me"
+      messageIdToDelete: null,
+      selectedFile: null,
+      filePreview: null,
+      fileType: "",
+      fileName: "",
+      currentLocation: null,
+      stream: null,
+      image: null,
+      videomediaRecorder: null,
+      chunks: [],
+      recordedVideo: null,
     };
   },
   watch: {
@@ -1237,16 +1469,24 @@ beforeRouteUpdate(to, from, next) {
 },
   mounted() {
     // Fetch messages when the component is first loaded
+   
     this.getMessages();
     this.scrollToBottom();
     this.listenForMessages();
     this.getUserInfo();
     this.activeUserListner();
+    this.listenForMessageDeletions();
     console.log('Sended id',this.userId);
 
   },
   computed: {
-   
+    mapLink() {
+      if (this.currentLocation) {
+        const { latitude, longitude } = this.currentLocation;
+        return `https://www.google.com/maps?q=${latitude},${longitude}`;
+      }
+      return "#";
+    },
     imageUrls() {
       // Parse JSON only if it's a gallery type and file_url is present
       return this.message.type === 'gallery' && this.message.file_url
@@ -1270,16 +1510,133 @@ beforeRouteUpdate(to, from, next) {
     window.removeEventListener("resize", this.updateWindowWidth);
   },
   methods: {
+    async startCamera() {
+      try {
+        this.stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true, // Audio agar required ho
+        });
+        this.$refs.video.srcObject = this.stream;
+      } catch (error) {
+        console.error("Camera access failed:", error);
+      }
+    },
+    captureImage() {
+      const video = this.$refs.video;
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      this.filePreview = canvas.toDataURL("image/png"); // Base64 image
+      this.fileType='image';
+      this.showPreviewModal();
+    },
+    startMediaRecording() {
+      this.chunks = [];
+      this.videomediaRecorder = new MediaRecorder(this.stream);
+      this.videomediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          this.chunks.push(event.data);
+        }
+      };
+      this.videomediaRecorder.onstop = () => {
+        const blob = new Blob(this.chunks, { type: "video/webm" });
+        this.recordedVideo = URL.createObjectURL(blob);
+        this.fileName = 'RecordedAudio.wav';
+        this.fileType = 'video';
+        this.filePreview = this.recordedVideo;
+        this.showPreviewModal();
+      };
+      this.videomediaRecorder.start();
+    },
+    stopMediaRecording() {
+      this.videomediaRecorder.stop();
+    },
+    getCurrentLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const { latitude, longitude } = position.coords;
+            this.currentLocation = { latitude, longitude };
+            this.fileType = 'currentLocation';
+            this.fileName= `https://www.google.com/maps?q=${latitude},${longitude}`;
+            this.showPreviewModal();
+          },
+          error => {
+            console.error("Error getting location:", error);
+            alert("Unable to fetch location.");
+          }
+        );
+      } else {
+        alert("Geolocation is not supported by your browser.");
+      }
+    },
+    triggerFileInput() {
+      this.$refs.fileInput.click();
+    },
+
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      this.selectedFile=file;
+      if (file) {
+        this.fileName = file.name;
+        this.fileType = file.type;
+        const reader = new FileReader();
+        
+        reader.onload = () => {
+          this.filePreview = reader.result;
+          this.showPreviewModal();
+        };
+        
+        reader.readAsDataURL(file);
+      }
+    },
+    showPreviewModal() {
+      // You can trigger the modal manually here, but it's already shown based on v-if
+      // If you need to trigger it programmatically, you can use Bootstrap's modal API
+      const modal = new Modal(document.getElementById('file-preview'));
+      modal.show();
+    },
     goBack() {
       this.$emit('navigate-back'); // Emit an event to the parent
     },
     initializeComponent() {
         console.log("Sended id", this.userId);
         this.getMessages();
+        this.listenForMessageDeletions();
         this.scrollToBottom();
         this.listenForMessages();
         this.getUserInfo();
         this.activeUserListner();
+    },
+    setMessageToDelete(messageId) {
+      this.messageIdToDelete = messageId;
+    },
+    async deleteMessage() {
+      try {
+        const response = await axios.delete(`/messages/delete/${this.messageIdToDelete}`, {
+          data: {
+            delete_for_everyone: this.deleteFor === "delete_for_everyone",
+          },
+        });
+        if (response.data.status) {
+          this.messages = this.messages.filter(
+            (message) => message.id !== this.messageIdToDelete
+          );
+          this.messageIdToDelete = null;
+        }
+      } catch (error) {
+        console.error(error.response?.data?.message || "Error deleting message");
+      }
+    },
+    listenForMessageDeletions() {
+    const current_user_id = localStorage.getItem("userId");
+    echo.private(`deletechat.${this.userId}.${current_user_id}`)
+      .listen('message.deleted', (event) => {
+        console.log('Deleted message id',event.messageId);
+        this.messages = this.messages.filter(message => message.id !== event.messageId);
+      });
     },
     getprofileFileUrl(avatar) {
       return avatar ? `http://127.0.0.1:8000/${avatar}` : '/assets/img/profiles/avatar-06.jpg';
@@ -1304,16 +1661,15 @@ beforeRouteUpdate(to, from, next) {
       });
     },
     getMessages() {
-      axios
-          .get(`/messages/${this.userId}`)
-          .then((response) => {
-            this.messages = response.data || [];
-            console.log('messages:', response.data);
-            this.scrollToBottom();
-          })
-          .catch((error) => {
-            console.error("Error fetching messages:", error);
-          });
+      axios.get(`/messages/${this.userId}`)
+           .then((response) => {
+             this.messages = response.data || [];
+             console.log('messages:', response.data);
+             this.scrollToBottom();
+           })
+           .catch((error) => {
+             console.error("Error fetching messages:", error);
+           });
     },
     listenForMessages() {
       const receiverId = localStorage.getItem("userId");
@@ -1343,89 +1699,14 @@ beforeRouteUpdate(to, from, next) {
         console.error("User ID not found in localStorage.");
     }
 },
-    handleFileUpload(event) {
-      this.selectedFile = event.target.files[0];
-    },
-    sendMessage(type = 'text') {
+    
+    sendMessage() {
       const formData = new FormData();
-
-      // Send text message
-      if (type === 'text' && this.newMessage.trim()) {
         formData.append('message', this.newMessage);
         formData.append("receiver_id", this.userId);
-        formData.append('type', 'text');
-
-        // Handle file input (single file)
-      } else if (this.selectedFile) {
-        formData.append('file', this.selectedFile);
-        formData.append('type', 'file');
-
-        // Handle audio recording
-      } else if (type === 'audio' && this.recordedAudio) {
-        formData.append('file', this.recordedAudio);
-        formData.append('type', 'audio');
-
-        // Handle image (taken with camera or selected)
-      } else if (type === 'image' && this.selectedImage) {
-        formData.append('file', this.selectedImage);
-        formData.append('type', 'image');
-
-        // Handle image gallery (multiple images selected)
-      } else if (type === 'gallery' && this.selectedImages.length > 0) {
-        this.selectedImages.forEach((image) => {
-          formData.append('files[]', image);  // Using 'files[]' for multiple files
-        });
-        formData.append('type', 'gallery');
-
-        // Handle video (recorded video or selected from gallery)
-      } else if (type === 'video' && (this.recordedVideo || this.selectedVideo)) {
-        formData.append('file', this.recordedVideo || this.selectedVideo);
-        formData.append('type', 'video');
-
-        // Handle location
-      } else if (type === 'location') {
-        formData.append('type', 'location');
-        // Add any additional location data here if needed
-
-        // Handle contact
-      } else if (type === 'contact') {
-        formData.append('type', 'contact');
-        // Add any contact data here if needed
-
-      } else {
-        return; // Prevent sending if no valid message type
-      }
-
-      // Send data via axios
-      axios
-          .post("/message/send", formData)
-          .then((response) => {
-            this.messages.push(response.data.messages);
-            this.newMessage = "";
-            this.selectedFile = null;
-            this.selectedImage = null;
-            this.selectedImages = [];
-            this.recordedAudio = null;
-            this.recordedVideo = null;
-            this.selectedVideo = null;
-            this.scrollToBottom();
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        this.sendNewMessage(formData);
     },
-    sendImageMessage() {
-      const formData = new FormData();
-      formData.append('file',this.selectedImage);
-      formData.append('receiver_id',this.userId);
-      formData.append('type','image');
-      this.selectedFile = null;
-      axios.post('/message/send',formData)
-          .then((response) => {
-            this.messages.push(response.data.messages);
-            this.scrollToBottom();
-          })
-    },
+  
     scrollToBottom() {
       const container = this.$refs.chatContainer;
       if (container) {
@@ -1450,9 +1731,28 @@ beforeRouteUpdate(to, from, next) {
             };
 
             this.mediaRecorder.onstop = () => {
-              const audioBlob = new Blob(this.audioChunks, {type: 'audio/wav'});
+              const audioBlob = new Blob(this.audioChunks, {type: 'audio'});
               const audioUrl = URL.createObjectURL(audioBlob);
-              this.sendVoiceMessage(audioBlob, audioUrl);
+              this.selectedFile=audioBlob;
+              this.recordingTime = 0;
+          this.timerInterval = setInterval(() => {
+            this.recordingTime += 1;
+          }, 1000);
+            const file = audioBlob
+            if (file) {
+              this.fileName = 'RecordedAudio.wav';
+              this.fileType = 'audio';
+              this.audioUrl = audioUrl;
+              const reader = new FileReader();
+        
+               reader.onload = () => {
+                this.filePreview = reader.result;
+                  this.showPreviewModal();
+               };
+        
+                 reader.readAsDataURL(file);
+            }
+              // this.sendVoiceMessage(audioBlob, audioUrl);
             };
             this.mediaRecorder.start();
             this.isRecording = true;
@@ -1464,13 +1764,31 @@ beforeRouteUpdate(to, from, next) {
     stopRecording() {
       this.mediaRecorder.stop();
       this.isRecording = false;
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
     },
-    sendVoiceMessage(audioBlob) {
-      const formData = new FormData();
-      formData.append('file', audioBlob);
-      formData.append('receiver_id', this.userId);
-      formData.append('type', 'audio'); // Indicate the type of message
-      alert(formData || 'Send Voice Message');
+    sendfiles() {
+    if (!this.selectedFile) {
+      alert("No file selected to send.");
+      return;
+    }
+
+    // Prepare the message object or form data
+    const formData = new FormData();
+    formData.append("file", this.selectedFile);
+    formData.append('receiver_id', this.userId);
+    formData.append("message", "Here is the file."); // Optional: Additional message
+
+    // Send the file via API or WebSocket
+    this.sendNewMessage(formData);
+  },
+  formatTimer(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    },
+    sendNewMessage(formData) {
+     // Indicate the type of message
       axios.post('/message/send', formData)
           .then(response => {
             this.messages.push(response.data.messages);
@@ -1495,9 +1813,7 @@ beforeRouteUpdate(to, from, next) {
     selectedImage(event) {
       this.selectedImage = event.target.files[0];
     },
-    triggerFileInput() {
-      this.$refs.fileInput.click();
-    },
+    
   },
 };
 </script>

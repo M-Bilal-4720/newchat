@@ -103,7 +103,7 @@ export default {
         hour: '2-digit', minute: '2-digit'
       });
     },
-    getMessages() {
+    getMessages() {'9'
       axios
           .get(`/group/messages/${this.groupId}`)
           .then((response) => {
@@ -126,16 +126,17 @@ export default {
           });
     },
     listenForMessages() {
-      echo
-          .private(`group.${this.groupId}`)
+      echo.private(`group.${this.groupId}`)
           .listen("GroupMessageSent", (event) => {
-            const newMessage = {
-              ...event.message,
-              user: event.message.user || {},
-            };
-            this.messages.push(newMessage);
-            console.log('Pusher Message:',newMessage);
-            this.scrollToBottom();
+            console.log('group massege',event.message);
+            // const newMessage = {
+            //   ...event.message,
+            //   user: event.message.user || {},
+            // };
+            // console.log('Group id', this.groupId);
+            // this.messages.push(newMessage);
+            // console.log('Pusher Message:',newMessage);
+            // this.scrollToBottom();
           });
     },
     handleFileUpload(event) {
@@ -306,24 +307,16 @@ export default {
         console.log('Listening for status updates...');
         echo.join('presence.friends') // Global channel for all users
             .listen('UserStatusUpdated', (event) => {
-                console.log('Received group status update:', event);
-
-                // Ensure groupInfo.users is an array and the structure is correct
                 if (Array.isArray(this.groupInfo.users)) {
                     this.groupInfo.users.forEach((user) => {
-                      
-                        // Check if user.user exists and then proceed
                         if (user.user && user.user?.id === event.user_id) {
                             console.log(`Updating status for user ID: ${user.user.id}`);
-
-                            // Update active users and total users counts
                             if (event.is_active === 1) {
                                 this.groupInfo.activeusers += 1;
                             } else if (event.is_active === 0) {
                                 this.groupInfo.activeusers -= 1;
                             }
                             this.$set(this.groupInfo, 'activeusers', this.groupInfo.activeusers);
-                            // Exit the loop once the matching user is found
                         }
                     });
                 }
@@ -331,10 +324,7 @@ export default {
     } else {
         console.error("User ID not found in localStorage.");
     }
-},
-
-
-    
+    },
   },
 };
 </script>

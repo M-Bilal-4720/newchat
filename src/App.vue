@@ -1,15 +1,24 @@
 <template>
 
   <div id="app">
-
+    <spinner v-if="spinnerStore.isLoading" />
     <router-view />
   </div>
 
 </template>
 <script>
 import axios from './axios';
+import Spinner from "@/views/SpinnerVue.vue";
+import { useSpinnerStore } from "@/stores/spinnerStore";
 export default {
   name: "App",
+  components: {
+    Spinner,
+  },
+  setup() {
+    const spinnerStore = useSpinnerStore();
+    return { spinnerStore };
+  },
   mounted() {
     this.updateActiveStatus(1);
     document.addEventListener("visibilitychange", this.handleVisibilityChange);

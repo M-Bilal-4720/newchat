@@ -1,8 +1,6 @@
 <template>
-
     <!-- content -->
     <div class="content main_content">
-
       <!-- Left Sidebar Menu -->
       <div class="sidebar-menu">
         <div class="logo">
@@ -76,23 +74,18 @@
         </div>
       </div>
       <!-- /Left Sidebar Menu -->
-
       <!-- sidebar group -->
       <div class="sidebar-group">
-
         <div class="tab-content">
           <div class="tab-pane fade active show" id="chat-menu">
-
             <!-- Chats sidebar -->
             <div id="chats" class="sidebar-content active slimscroll">
-
               <div class="slimscroll">
-
                 <div class="chat-search-header">
                   <div class="header-title d-flex align-items-center justify-content-between">
                     <h4 class="mb-3">Chats</h4>
                     <div class="d-flex align-items-center mb-3">
-                      <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#new-chat" class="add-icon btn btn-primary p-0 d-flex align-items-center justify-content-center fs-16 me-2"><i class="ti ti-plus"></i></a>
+                      <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#new-chat" @click="getUsersNotFriend()" class="add-icon btn btn-primary p-0 d-flex align-items-center justify-content-center fs-16 me-2"><i class="ti ti-plus"></i></a>
                       <div class="dropdown" @click="openDropdown2" @mouseleave="closeDropdown2">
                         <a href="javascript:void(0);" data-bs-toggle="dropdown" class="fs-16 text-default" :class="{ show: dropdownVisible2 }">
                           <i class="ti ti-dots-vertical"></i>
@@ -116,7 +109,6 @@
                   </div>
                   <!-- /Chat Search -->
                 </div>
-
                 <!-- Online Contacts -->
                 <div class="top-online-contacts sidebar-body" id="chatsidebar">
                   <!-- Left Chat Title -->
@@ -167,11 +159,11 @@
                                   </span>
                                   </p>
                                   <p v-if="friend.messages?.type === 'text'">{{ friend.messages?.message }}</p>
-                                  <p v-if="friend.messages?.type === 'file'">
+                                  <p v-if="friend.messages?.type === 'image'">
                                     <i class="ti ti-photo me-2"></i>Photo
                                   </p>
-                                  <p v-if="friend.messages?.type === 'document'">
-                                    <i class="ti ti-file me-2"></i>Document
+                                  <p v-if="friend.messages?.type === 'file'">
+                                    <i class="ti ti-files me-2"></i>Document
                                   </p>
                                   <p v-if="friend.messages?.type === 'audio'">
                                     <i class="ti ti-volume me-2"></i>Voice
@@ -192,7 +184,7 @@
                                 <span class="time" v-if="friend.messages">{{ formatTime(friend.messages.created_at) }}</span>
                                 <div class="chat-pin">
                                   <i class="ti ti-pin me-2"></i>
-                                  <span class="count-message fs-12 fw-semibold">12</span>
+                                  <span class="count-message fs-12 fw-semibold" v-if="friend.unread_message > 0">{{ friend.unread_message }}</span>
                                 </div>
                               </div>
                             </div>
@@ -208,7 +200,7 @@
                               <li><a class="dropdown-item" href="#"><i class="ti ti-check me-2"></i>Mark as Unread</a></li>
                               <li><a class="dropdown-item" href="#"><i class="ti ti-pinned me-2"></i>Pin Chats</a></li>
                               <li>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete-chat">
+                                <a class="dropdown-item" href="#" @click="friendDelte(friend.user.id)" data-bs-toggle="modal" data-bs-target="#delete-chat">
                                 <i class="ti ti-trash me-2"></i>Delete</a>
                               </li>
                             </ul>
@@ -2066,16 +2058,10 @@
                   </div>
                 </div>
                 <!-- /Online Contacts -->
-
-
-
               </div>
-
             </div>
             <!-- / Chats sidebar -->
-
           </div>
-
           <!-- Contact -->
           <div class="tab-pane fade" id="contact-menu">
             <!-- Chats sidebar -->
@@ -2144,20 +2130,16 @@
             <!-- / Chats sidebar -->
           </div>
           <!-- /Contact -->
-
           <!-- Group -->
           <div class="tab-pane fade" id="group-menu">
-
             <!-- Chats sidebar -->
             <div class="sidebar-content active slimscroll">
-
               <div class="slimscroll">
-
                 <div class="chat-search-header">
                   <div class="header-title d-flex align-items-center justify-content-between">
                     <h4 class="mb-3">Group</h4>
                     <div class="d-flex align-items-center mb-3">
-                      <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#new-chat" class="add-icon btn btn-primary p-0 d-flex align-items-center justify-content-center fs-16 me-2"><i class="ti ti-plus"></i></a>
+                      <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#new-group" class="add-icon btn btn-primary p-0 d-flex align-items-center justify-content-center fs-16 me-2"><i class="ti ti-plus"></i></a>
                       <div class="dropdown">
                         <a href="javascript:void(0);" data-bs-toggle="dropdown" class="fs-16 text-default">
                           <i class="ti ti-dots-vertical"></i>
@@ -2168,7 +2150,6 @@
                       </div>
                     </div>
                   </div>
-
                   <!-- Chat Search -->
                   <div class="search-wrap">
                     <form action="#">
@@ -2180,17 +2161,13 @@
                   </div>
                   <!-- /Chat Search -->
                 </div>
-
                 <div class="sidebar-body ">
-
                   <!-- Left Chat Title -->
                   <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5>All Groups</h5>
                   </div>
                   <!-- /Left Chat Title -->
-
                   <div class="chat-users-wrap">
-
                     <div class="chat-list" v-for="data in Groups" :key="data.group.id">
                       <a href="#" @click="openGroup(data.group.id)" class="chat-user-list">
                         <div class="avatar avatar-lg online me-2">
@@ -2223,18 +2200,13 @@
                         </ul>
                       </div>
                     </div>
-
                   </div>
                 </div>
-
               </div>
-
             </div>
             <!-- / Chats sidebar -->
-
           </div>
           <!-- /Group -->
-
           <!-- Status -->
           <div class="tab-pane fade " id="status-menu">
             <div class="sidebar-content active slimscroll">
@@ -2462,7 +2434,6 @@
             </div>
           </div>
           <!-- /Status -->
-
           <!-- Add Status -->
           <div class="modal fade" id="new-status">
             <div class="modal-dialog modal-dialog-centered">
@@ -2496,8 +2467,6 @@
             </div>
           </div>
           <!-- /Add Status -->
-
-
           <!-- Status -->
           <div class="modal fade" id="upload-file-image">
             <div class="modal-dialog modal-dialog-centered">
@@ -2567,7 +2536,6 @@
             </div>
           </div>
           <!-- /Status -->
-
           <!-- Profile -->
           <div class="tab-pane fade" id="profile-menu">
             <!-- Profile sidebar -->
@@ -2751,7 +2719,6 @@
             <!-- / Profile sidebar -->
           </div>
           <!-- /Profile -->
-
           <!-- Calls -->
           <div class="tab-pane fade" id="call-menu">
             <div class="sidebar-content active slimscroll">
@@ -3303,7 +3270,6 @@
             </div>
           </div>
           <!-- /Calls -->
-
           <!-- Settings -->
           <div class="tab-pane fade" id="setting-menu">
             <!-- Profile sidebar -->
@@ -3993,21 +3959,14 @@
             <!-- / Chats sidebar -->
           </div>
           <!-- /Settings -->
-
         </div>
       </div>
       <!-- /Sidebar group -->
-
       <!-- Chat -->
-
       <component :is="currentComponent" v-bind="componentProps" @navigate-back="setPreviousComponent"></component>
-
-
       <!-- /Chat -->
-
       <!-- Contact Info -->
       <!-- /Contact Info -->
-
       <!-- Favourites Info -->
       <div class="chat-offcanvas fav-canvas offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="contact-favourite">
         <div class="offcanvas-header">
@@ -4078,7 +4037,6 @@
         </div>
       </div>
       <!-- /Favourites Info -->
-
       <!-- Mute -->
       <div class="modal fade" id="mute-notification">
         <div class="modal-dialog modal-dialog-centered">
@@ -4135,8 +4093,6 @@
         </div>
       </div>
       <!-- /Mute -->
-
-
       <!-- Add Call -->
       <div class="modal fade" id="new-call">
         <div class="modal-dialog modal-dialog-centered">
@@ -4224,42 +4180,8 @@
         </div>
       </div>
       <!-- /Add Call -->
-
       <!-- Delete -->
-      <div class="modal fade" id="message-delete">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">
-                Delete Chat
-              </h4>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                <i class="ti ti-x"></i>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form action="#">
-                <div class="form-check mb-3">
-                  <input class="form-check-input" type="radio" checked="" name="delete-chat" id="delete-for-me">
-                  <label class="form-check-label" for="delete-for-me">Delete For Me</label>
-                </div>
-                <div class="form-check mb-3">
-                  <input class="form-check-input" type="radio" name="delete-chat" id="delete-for-everyone">
-                  <label class="form-check-label" for="delete-for-everyone">Delete For Everyone</label>
-                </div>
-                <div class="row g-3">
-                  <div class="col-6">
-                    <a href="#" class="btn btn-outline-primary w-100" data-bs-dismiss="modal" aria-label="Close">Cancel</a>
-                  </div>
-                  <div class="col-6">
-                    <button type="submit" class="btn btn-primary w-100">Delete</button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+    
       <!-- /Delete -->
       <!-- Block User -->
       <div class="modal fade" id="block-user">
@@ -4293,7 +4215,6 @@
         </div>
       </div>
       <!-- /Block User -->
-
       <!-- Report User -->
       <div class="modal fade" id="report-user">
         <div class="modal-dialog modal-dialog-centered">
@@ -4327,7 +4248,6 @@
         </div>
       </div>
       <!-- /Report User -->
-
       <!-- Delete Chat -->
       <div class="modal fade" id="delete-chat">
         <div class="modal-dialog modal-dialog-centered">
@@ -4360,7 +4280,6 @@
         </div>
       </div>
       <!-- /Delete Chat -->
-
       <!-- New Chat -->
       <div class="modal fade" id="new-chat">
         <div class="modal-dialog modal-dialog-centered">
@@ -4381,60 +4300,18 @@
                 </div>
                 <h6 class="mb-3 fw-medium fs-16">Contacts</h6>
                 <div class="contact-scroll contact-select mb-3">
-                  <div class="contact-user d-flex align-items-center justify-content-between">
+                  <div v-for=" user in UsersNotFriends" :key="user.id" class="contact-user d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
                       <div class="avatar avatar-lg">
-                        <img src="/assets/img/profiles/avatar-01.jpg" class="rounded-circle" alt="image">
+                        <img :src="getFileUrl(user.avatar)" class="rounded-circle" alt="image">
                       </div>
                       <div class="ms-2">
-                        <h6>Aaryian Jose</h6>
+                        <h6>{{user.name}}</h6>
                         <p>App Developer</p>
                       </div>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" name="contact">
-                    </div>
-                  </div>
-                  <div class="contact-user d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
-                      <div class="avatar avatar-lg">
-                        <img src="/assets/img/profiles/avatar-02.jpg" class="rounded-circle" alt="image">
-                      </div>
-                      <div class="ms-2">
-                        <h6>Sarika Jain</h6>
-                        <p>UI/UX Designer</p>
-                      </div>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" name="contact">
-                    </div>
-                  </div>
-                  <div class="contact-user d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
-                      <div class="avatar avatar-lg">
-                        <img src="/assets/img/profiles/avatar-03.jpg" class="rounded-circle" alt="image">
-                      </div>
-                      <div class="ms-2">
-                        <h6>Clyde Smith</h6>
-                        <p>Web Developer</p>
-                      </div>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" name="contact">
-                    </div>
-                  </div>
-                  <div class="contact-user d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
-                      <div class="avatar avatar-lg">
-                        <img src="/assets/img/profiles/avatar-04.jpg" class="rounded-circle" alt="image">
-                      </div>
-                      <div class="ms-2">
-                        <h6>Carla Jenkins</h6>
-                        <p>Business Analyst</p>
-                      </div>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" name="contact">
+                      <input class="form-check-input" @click="addFriend(user.id)" type="checkbox" name="contact">
                     </div>
                   </div>
                 </div>
@@ -4452,7 +4329,73 @@
         </div>
       </div>
       <!-- /New Chat -->
-
+      <!-- New Group -->
+      <div class="modal fade" id="new-group">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">New Group</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="ti ti-x"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="index.html">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <label for="avatar-upload" class="set-pro avatar avatar-xxl rounded-circle mb-3 p-1">
+                                    <span class="avatar avatar-xl bg-transparent-dark rounded-circle"></span>
+                                    <span class="add avatar avatar-sm d-flex justify-content-center align-items-center">
+                                        <i class="ti ti-plus rounded-circle d-flex justify-content-center align-items-center"></i>
+                                    </span>
+                                </label>
+                                <input type="file" id="avatar-upload" style="display: none;" accept="image/*">
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label class="form-label">Group Name</label>
+                                    <div class="input-icon mb-3 position-relative">                                           
+                                        <input type="text" value="" class="form-control" placeholder="First Name">
+                                        <span class="icon-addon">
+                                            <i class="ti ti-users-group"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <label class="form-label">About</label>
+                                    <div class="input-icon mb-3 position-relative">
+                                        <input type="text" value="" class="form-control" placeholder="Last Name">
+                                        <span class="icon-addon">
+                                            <i class="ti ti-info-octagon"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <label class="form-label">Group Type</label>
+                                <div class="d-flex">
+                                    
+                                    <div class="form-check me-3">
+                                        <input class="form-check-input" type="radio" name="mute" id="group1">
+                                        <label class="form-check-label" for="group1">Public</label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="radio" name="mute" id="group2">
+                                        <label class="form-check-label" for="group2">Private</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-3">       
+                                <div class="col-6">                  
+                                    <a href="#" class="btn btn-outline-primary w-100" data-bs-dismiss="modal" aria-label="Close">Cancel</a>
+                                </div>     
+                                <div class="col-6">      
+                                    <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add-group">Next</button>
+                                </div> 
+                            </div>
+                        </form>
+                    </div>       
+                </div>
+            </div>
+      </div>
+      <!-- /New Group --> 
       <!-- Add Contact -->
       <div class="modal fade" id="add-contact">
         <div class="modal-dialog modal-dialog-centered">
@@ -4611,7 +4554,6 @@
         </div>
       </div>
       <!-- /Add Contact -->
-
       <!-- Contact Detail -->
       <div class="modal fade" id="contact-details">
         <div class="modal-dialog modal-dialog-centered">
@@ -4744,7 +4686,6 @@
         </div>
       </div>
       <!-- /Contact Detail -->
-
       <!-- Voice Call -->
       <div class="modal fade" id="voice_call">
         <div class="modal-dialog modal-dialog-centered">
@@ -4779,7 +4720,6 @@
         </div>
       </div>
       <!-- /Voice Call -->
-
       <!-- Voice Call attend -->
       <div class="modal fade" id="voice_attend" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -4858,7 +4798,6 @@
         </div>
       </div>
       <!-- /Voice Call attend -->
-
       <!-- Voice Call group -->
       <div class="modal fade" id="voice_group" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -5083,7 +5022,6 @@
         </div>
       </div>
       <!-- /Voice Call group -->
-
       <!-- Video Call -->
       <div class="modal fade" id="video-call">
         <div class="modal-dialog modal-dialog-centered">
@@ -5320,7 +5258,6 @@
         </div>
       </div>
       <!-- /Video Call group -->
-
       <!-- Invite -->
       <div class="modal fade" id="invite">
         <div class="modal-dialog modal-dialog-centered">
@@ -5359,7 +5296,6 @@
         </div>
       </div>
       <!-- /Invite -->
-
       <!-- Mute User -->
       <div class="modal fade" id="mute-user">
         <div class="modal-dialog modal-dialog-centered">
@@ -5449,7 +5385,6 @@
         </div>
       </div>
       <!-- /Mute User -->
-
       <!-- Delete  Account -->
       <div class="modal fade" id="delete-account">
         <div class="modal-dialog modal-dialog-centered">
@@ -5508,7 +5443,6 @@
         </div>
       </div>
       <!-- /Delete Account -->
-
       <!-- Logout -->
       <div class="modal fade" id="acc-logout">
         <div class="modal-dialog modal-dialog-centered">
@@ -5543,8 +5477,6 @@
       <!-- /Logout -->
     </div>
     <!-- /Content -->
-
-
 </template>
 
 <script>
@@ -5554,6 +5486,15 @@ import GroupChatComponent from "../components/GroupChatComponent.vue";
 import DefualtStatusComponent from "../components/DefualtStatusComponent.vue";
 import MainStatusComponent from "../components/MainStatusComponent.vue";
 import MainCallsComponent from "../components/MAinCallsComponent.vue";
+import { setActivePinia, createPinia } from "pinia";
+import { useSpinnerStore } from "@/stores/spinnerStore";
+
+const pinia = createPinia();
+setActivePinia(pinia); // Ensure Pinia is active before using the store
+
+const spinnerStore = useSpinnerStore();
+
+
 import axios from '../axios';
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
@@ -5594,6 +5535,7 @@ export default {
       userinfo: {},
       userInfo: {},
       friends: [],
+      UsersNotFriends:[],
       selectedUser: null,
       activeUserId: null,
       activeGroupId:null,
@@ -5636,7 +5578,43 @@ export default {
     }
   },
   methods: {
- 
+    friendDelte(uuId){
+      axios.delete(`/friends/remove/${uuId}`).then((response) => {
+                     console.log('User deleted',response.data.message);
+      })
+    },
+ getUsersNotFriend(){
+    if (this.searchQuery.length > 1) { // Trigger search after 3 characters
+        try {
+          const response = axios.get(`/user/not/friends?search=${this.searchQuery}`);
+          if (response.data.status) {
+            this.UsersNotFriends = response.data.user; // Assuming the API returns a `users` array
+            console.log('search:',response.data.user);
+          } else {
+            this.Users = []; // Clear results if API response indicates no users
+          }
+        } catch (error) {
+          console.error('Error fetching users:', error);
+          this.UsersNotFriends = []; // Clear results on error
+        }
+      }else if(this.searchQuery.length > 0){
+        try {
+          const response = axios.get(`/user/not/friends`);
+          if (response.data.status) {
+            this.UsersNotFriends = response.data.user; // Assuming the API returns a `users` array
+            console.log('search:',response.data.user);
+          } else {
+            this.UsersNotFriends = []; // Clear results if API response indicates no users
+          }
+        } catch (error) {
+          console.error('Error fetching users:', error);
+          this.UsersNotFriends = []; // Clear results on error
+        }
+      }
+      else {
+        this.searchResults = []; // Clear results if search query is too short
+      }
+ },
     activeUserListner() {
     const userId = localStorage.getItem('userId');
 
@@ -5735,12 +5713,10 @@ export default {
     addFriend(userId) {
       axios.post('/friends/add', { friend_id: userId })
           .then(response => {
-            // Handle success
             console.log(response.data);
             this.selectedUser.friend = true;
           })
           .catch(error => {
-            // Handle error
             console.error(error.response ? error.response.data : error.message);
             alert("Error adding friend!");
           });
@@ -5756,7 +5732,24 @@ export default {
       this.activeUserId = userId;
       this.componentProps = { userId };
       this.setActiveComponent('MainChatComponent');
+      this.setAsRead(userId);
+     
     },
+    setAsRead(uuId){
+      axios.post('/messages/mark/as/read', { friend_id: uuId })
+      .then(response => {
+        if (response.data.success) {
+          // Update local messages as read
+          const friend = this.friends.find(f => f.user.id === uuId);
+          if (friend) {
+            friend.unread_message = 0; // Clear unread count
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Failed to mark messages as read:', error);
+      });
+  },
     openGroup(groupId){
      this.activeGroupId = groupId;
      this.componentProps={groupId};
@@ -5795,12 +5788,19 @@ export default {
       }
     },
     async getUsers() {
-      axios.get("/users").then((response) => {
+      spinnerStore.showSpinner();
+      axios.get("/users")
+      .then((response) => {
         this.Users = response.data.user;
+        //spinnerStore.hideSpinner();
         console.log('users:',response.data.user);
+      }).catch((error) => {
+       // spinnerStore.hideSpinner();
+        console.error("Error fetching Users:", error);
       })
     },
     async getFriends() {
+      spinnerStore.showSpinner();
       axios
           .get("/friends_with_msg")
           .then((response) => {
